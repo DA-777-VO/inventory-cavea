@@ -1,0 +1,12 @@
+.card {
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+tfoot th {
+  font-weight: bold;
+}

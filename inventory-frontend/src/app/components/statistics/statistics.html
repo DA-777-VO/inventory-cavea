@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>სტატისტიკა</h2>
+    <a routerLink="/" class="btn btn-secondary">
+      <i class="bi bi-arrow-left"></i> უკან
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage() }}
+    </div>
+  } @else {
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <h5 class="card-title">სულ პროდუქტები</h5>
+            <h2 class="mb-0">{{ totalProducts | number }}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card bg-success text-white">
+          <div class="card-body">
+            <h5 class="card-title">ჯამური ღირებულება</h5>
+            <h2 class="mb-0">{{ totalValue | number:'1.2-2' }} ₾</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow">
+      <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">სტატისტიკა კინოთეატრების მიხედვით</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+              <th scope="col">კინოთეატრი</th>
+              <th scope="col" class="text-end">პროდუქტების რაოდენობა</th>
+              <th scope="col" class="text-end">ჯამური საფასური (₾)</th>
+              <th scope="col" class="text-end">საშუალო ფასი (₾)</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (stat of statistics(); track stat.locationName) {
+                <tr>
+                  <td><strong>{{ stat.locationName }}</strong></td>
+                  <td class="text-end">{{ stat.totalProducts | number }}</td>
+                  <td class="text-end">{{ stat.totalPrice | number:'1.2-2' }}</td>
+                  <td class="text-end">
+                    {{ (stat.totalPrice / stat.totalProducts) | number:'1.2-2' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+            <tfoot class="table-secondary">
+            <tr>
+              <th>სულ</th>
+              <th class="text-end">{{ totalProducts | number }}</th>
+              <th class="text-end">{{ totalValue | number:'1.2-2' }}</th>
+              <th class="text-end">{{ (totalValue / totalProducts) | number:'1.2-2' }}</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        @if (statistics().length === 0) {
+          <div class="alert alert-info text-center mb-0">
+            სტატისტიკა ხელმისაწვდომი არ არის
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

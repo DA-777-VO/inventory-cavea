@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">ნივთის დამატება</h3>
+        </div>
+        <div class="card-body">
+          @if (errorMessage()) {
+            <div class="alert alert-danger" role="alert">
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="name" class="form-label">სახელი *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                [class.is-invalid]="submitted() && f['name'].errors"
+                placeholder="შეიყვანეთ ნივთის სახელი">
+              @if (submitted() && f['name'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['name'].errors['required']) {
+                    <div>სახელი სავალდებულოა</div>
+                  }
+                  @if (f['name'].errors['minlength']) {
+                    <div>სახელი უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს</div>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="mb-3">
+              <label for="locationId" class="form-label">ადგილმდებარეობა *</label>
+              <select
+                class="form-select"
+                id="locationId"
+                formControlName="locationId"
+                [class.is-invalid]="submitted() && f['locationId'].errors">
+                <option value="">აირჩიეთ ადგილმდებარეობა</option>
+                @for (location of locations(); track location.id) {
+                  <option [value]="location.id">{{ location.name }}</option>
+                }
+              </select>
+              @if (submitted() && f['locationId'].errors) {
+                <div class="invalid-feedback">
+                  <div>ადგილმდებარეობა სავალდებულოა</div>
+                </div>
+              }
+            </div>
+
+            <div class="mb-3">
+              <label for="price" class="form-label">ფასი (₾) *</label>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                formControlName="price"
+                step="0.01"
+                min="0"
+                [class.is-invalid]="submitted() && f['price'].errors"
+                placeholder="0.00">
+              @if (submitted() && f['price'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['price'].errors['required']) {
+                    <div>ფასი სავალდებულოა</div>
+                  }
+                  @if (f['price'].errors['min']) {
+                    <div>ფასი უნდა იყოს დადებითი რიცხვი</div>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a routerLink="/" class="btn btn-secondary">
+                გაუქმება
+              </a>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="loading()">
+                @if (loading()) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                }
+                დამატება
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

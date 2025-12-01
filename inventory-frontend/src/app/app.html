@@ -1,0 +1,42 @@
+<div class="app-wrapper">
+
+  <nav class="navbar navbar-dark bg-primary shadow-sm">
+    <div class="container">
+
+      <a class="navbar-brand d-flex align-items-center" routerLink="/" style="cursor: pointer;">
+        <span class="brand-icon me-2">🎬</span>
+        <span class="brand-text">{{ title }}</span>
+      </a>
+
+
+      <div class="nav-links">
+        <a class="nav-link-btn" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span class="nav-icon">📋</span>
+          ინვენტარი
+        </a>
+        <a class="nav-link-btn" routerLink="/add" routerLinkActive="active">
+          <span class="nav-icon">➕</span>
+          დამატება
+        </a>
+        <a class="nav-link-btn" routerLink="/statistics" routerLinkActive="active">
+          <span class="nav-icon">📊</span>
+          სტატისტიკა
+        </a>
+      </div>
+    </div>
+  </nav>
+
+
+  <main class="main-content">
+    <div class="container-fluid py-4">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <span class="text-muted">© 2025 Cinema Inventory | David Apakin</span>
+    </div>
+  </footer>
+</div>

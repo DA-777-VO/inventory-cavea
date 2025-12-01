@@ -11,6 +11,9 @@
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint .",
     "start": "node build/index.js",
+    "seed": "ts-node src/seed.ts",
+    "seed-small": "ts-node src/seed-small.ts",
+    "clear-db": "ts-node src/clearDB.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
