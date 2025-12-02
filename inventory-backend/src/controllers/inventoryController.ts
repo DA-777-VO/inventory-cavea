@@ -24,7 +24,12 @@ export const getInventoryItems = async (req: Request, res: Response): Promise<vo
         }
 
         let order: Order = [];
-        if (sortBy === 'location') {
+        if (sortBy === 'name') {
+            order = [
+                [fn('length', col('Inventory.name')), sortOrder],
+                ['name', sortOrder]
+            ];
+        } else if (sortBy === 'location') {
             order = [[{ model: Location, as: 'location' }, 'name', sortOrder]];
         } else {
             order = [[sortBy, sortOrder]];

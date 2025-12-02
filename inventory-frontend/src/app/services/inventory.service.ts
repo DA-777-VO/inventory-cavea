@@ -36,6 +36,7 @@ export class InventoryService {
   }
 
   createInventoryItem(item: CreateInventoryItem): Observable<InventoryItem> {
+    console.log(item);
     return this.http.post<InventoryItem>(`${this.apiUrl}/inventory`, item);
   }
 

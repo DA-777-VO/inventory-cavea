@@ -1,15 +1,18 @@
-# Dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Build outputs
 build/
-
-*.tsbuildinfo
+dist/
+.build/
 
 .env
-
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 .vscode/
 .idea/
@@ -29,16 +32,44 @@ Thumbs.db
 # Logs
 logs/
 *.log
+log.txt
 
 # Runtime data
-pids/
+pids
 *.pid
 *.seed
 *.pid.lock
 
 # Coverage directory used by tools like istanbul
 coverage/
-*.lcov
+nyc_output/
+
+*.tsbuildinfo
+
+.npm
+
+.node_repl_history
+
+*.tgz
+
+.yarn-integrity
+
+.cache
+.parcel-cache
+
+.next
+
+.nuxt
+
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
 
 # Temporary folders
 tmp/
