@@ -51,4 +51,17 @@ export class InventoryService {
   getStatistics(): Observable<Statistics[]> {
     return this.http.get<Statistics[]>(`${this.apiUrl}/statistics`);
   }
+
+  createLocation(name: string): Observable<Location> {
+    return this.http.post<Location>(`${this.apiUrl}/locations`, { name });
+  }
+
+  updateLocation(id: string, name: string): Observable<Location> {
+    return this.http.put<Location>(`${this.apiUrl}/locations/${id}`, { name });
+  }
+
+  deleteLocation(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/locations/${id}`);
+  }
+
 }

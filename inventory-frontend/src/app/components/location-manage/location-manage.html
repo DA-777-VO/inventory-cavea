@@ -1,0 +1,189 @@
+<div class="container-lg">
+  <div class="page-header mb-4">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h2 class="page-title mb-3 mb-md-0">
+          <span class="title-icon">📍</span>
+          ლოკაციების მართვა
+        </h2>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <a routerLink="/" class="btn btn-secondary me-2">
+          <span class="btn-icon">←</span>
+          უკან
+        </a>
+        @if (!isAdding()) {
+          <button class="btn btn-primary" (click)="startAdd()">
+            <span class="btn-icon">➕</span>
+            ახალი ლოკაცია
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (successMessage()) {
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>✓</strong> {{ successMessage() }}
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>✗</strong> {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isAdding()) {
+    <div class="card mb-4 border-primary">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">ახალი ლოკაციის დამატება</h5>
+      </div>
+      <div class="card-body">
+        <form (submit)="$event.preventDefault(); addLocation()">
+          <div class="row align-items-end">
+            <div class="col-md-8">
+              <label for="newLocationName" class="form-label">
+                ლოკაციის სახელი *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="newLocationName"
+                [(ngModel)]="newLocationName"
+                [ngModelOptions]="{standalone: true}"
+                placeholder="მაგ: კავეა თბილისი მოლი"
+                required>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0">
+              <button
+                type="submit"
+                class="btn btn-success me-2"
+                [disabled]="loading() || !newLocationName().trim()">
+                @if (loading()) {
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                }
+                დამატება
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="cancelAdd()"
+                [disabled]="loading()">
+                გაუქმება
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      @if (loading() && locations().length === 0) {
+        <div class="loading-container">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">იტვირთება...</span>
+          </div>
+          <p class="loading-text mt-3">მონაცემების ჩატვირთვა...</p>
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-dark">
+            <tr>
+              <th style="width: 80px;">ID</th>
+              <th>სახელი</th>
+              <th style="width: 250px;" class="text-center">ოპერაციები</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (location of locations(); track location.id) {
+                <tr>
+                  <td class="align-middle">
+                    <span class="badge bg-secondary">{{ location.id }}</span>
+                  </td>
+                  <td class="align-middle">
+                    @if (editingLocationId() === location.id) {
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        [(ngModel)]="editingLocationName"
+                        [ngModelOptions]="{standalone: true}"
+                        (keyup.enter)="saveEdit(location.id)"
+                        (keyup.escape)="cancelEdit()"
+                        autofocus>
+                    } @else {
+                      <strong>{{ location.name }}</strong>
+                    }
+                  </td>
+                  <td class="align-middle text-center">
+                    @if (editingLocationId() === location.id) {
+                      <button
+                        class="btn btn-success btn-sm me-2"
+                        (click)="saveEdit(location.id)"
+                        [disabled]="loading() || !editingLocationName().trim()">
+                        ✓ შენახვა
+                      </button>
+                      <button
+                        class="btn btn-secondary btn-sm"
+                        (click)="cancelEdit()"
+                        [disabled]="loading()">
+                        ✗ გაუქმება
+                      </button>
+                    } @else {
+                      <button
+                        class="btn btn-warning btn-sm me-2"
+                        (click)="startEdit(location)"
+                        [disabled]="loading() || isAdding() || editingLocationId() !== null"
+                        title="რედაქტირება">
+                        ✏️ რედაქტირება
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        (click)="deleteLocation(location)"
+                        [disabled]="loading() || isAdding() || editingLocationId() !== null"
+                        title="წაშლა">
+                        🗑️ წაშლა
+                      </button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (locations().length === 0) {
+            <div class="empty-state">
+              <div class="empty-icon">📍</div>
+              <h4>ლოკაციები არ მოიძებნა</h4>
+              <p class="text-muted">დაამატეთ პირველი ლოკაცია "ახალი ლოკაცია" ღილაკის დაჭერით</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    @if (locations().length > 0) {
+      <div class="card-footer bg-light">
+        <div class="text-muted">
+          სულ: <strong>{{ locations().length }}</strong> ლოკაცია
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="alert alert-info mt-4" role="alert">
+    <h6 class="alert-heading">
+      <span class="me-2">💡</span>
+      მნიშვნელოვანი ინფორმაცია
+    </h6>
+    <ul class="mb-0">
+      <li>ლოკაციის დამატება: დააჭირეთ "ახალი ლოკაცია" ღილაკს</li>
+      <li>ლოკაციის რედაქტირება: დააჭირეთ "რედაქტირება" ღილაკს და შეცვალეთ სახელი</li>
+      <li>ლოკაციის წაშლა: შესაძლებელია მხოლოდ იმ შემთხვევაში, თუ მასზე ნივთები არ არის მიბმული</li>
+      <li>დუბლიკატი სახელები დაუშვებელია</li>
+    </ul>
+  </div>
+</div>

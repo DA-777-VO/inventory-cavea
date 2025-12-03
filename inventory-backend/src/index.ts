@@ -4,6 +4,7 @@ import cors from 'cors';
 import inventoryRoutes from "./routes/inventoryRoutes";
 import sequelize from "./database";
 import Location from "./models/Location";
+import locationRoutes from "./routes/locationRoutes";
 
 const PORT = 3000;
 
@@ -16,6 +17,7 @@ app.use(cors({
 }));
 
 app.use('/api', inventoryRoutes);
+app.use('/api/locations', locationRoutes);
 
 
 const REQUIRED_LOCATIONS = [

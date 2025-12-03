@@ -32,6 +32,7 @@ A full-stack web application for managing cinema inventory with support for 500,
 - ✅ Add new inventory items
 - ✅ Delete inventory items
 - ✅ View statistics by location
+- ✅ Manage locations (CRUD) - Add, edit, and delete cinema locations
 - ✅ Form validation
 - ✅ Responsive design
 - ✅ Optimized for large datasets (500,000+ records)
